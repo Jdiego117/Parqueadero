@@ -15,8 +15,9 @@ import java.util.LinkedList;
  */
 public class Parqueadero extends javax.swing.JFrame {
 
-    public LinkedList<Cubiculo> cubiculos; 
+    public Cubiculo cubiculos[] = new Cubiculo[10]; 
     public LinkedList<Factura> facturas; 
+    
     
     public int cubiculosDisponibles() {
         return 0; 
