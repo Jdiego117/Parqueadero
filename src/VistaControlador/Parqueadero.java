@@ -5,12 +5,59 @@
  */
 package VistaControlador;
 
+import Modelos.Cubiculo;
+import Modelos.Factura;
+import java.util.LinkedList;
+
 /**
  *
  * @author juand
  */
 public class Parqueadero extends javax.swing.JFrame {
 
+    public LinkedList<Cubiculo> cubiculos; 
+    public LinkedList<Factura> facturas; 
+    
+    public int cubiculosDisponibles() {
+        return 0; 
+    } 
+    
+    public int contarCarros() { 
+        return 0; 
+    } 
+    
+    public int contarMotos() { 
+        return 0; 
+    } 
+    
+    /* 
+        public Moto mayorNroCascos() {
+        }
+    */ 
+    
+    public int contarCarrosRemolque() { 
+        return 0; 
+    }
+    
+    public String reporteVehiculos() { 
+        return ""; 
+    } 
+    /* 
+        public Factura mayorFactura() { 
+    
+        }    
+    
+        public Carro mayorModeloCarro() { 
+    
+        } 
+    
+        public Carro menorModeloCarro() { 
+    
+        } 
+    */
+    
+    
+    
     /**
      * Creates new form Parqueadero
      */
