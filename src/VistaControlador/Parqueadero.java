@@ -5,8 +5,10 @@
  */
 package VistaControlador;
 
+import Modelos.Carro;
 import Modelos.Cubiculo;
 import Modelos.Factura;
+import Modelos.Moto;
 import java.util.LinkedList;
 
 /**
@@ -32,11 +34,23 @@ public class Parqueadero extends javax.swing.JFrame {
     } 
     
     public int contarCarros() { 
-        return 0; 
+        int contador = 0;
+        for (int i = 0; i < cubiculos.length; i++){
+        if (cubiculos[i].vehiculo instanceof Carro){
+            contador++;
+          }
+        }
+        return contador; 
     } 
     
     public int contarMotos() { 
-        return 0; 
+        int contador = 0;
+        for (int i = 0; i < cubiculos.length; i++){
+        if (cubiculos[i].vehiculo instanceof Moto){
+            contador++;
+          }
+        }
+        return contador; 
     } 
     
     /* 
@@ -45,7 +59,16 @@ public class Parqueadero extends javax.swing.JFrame {
     */ 
     
     public int contarCarrosRemolque() { 
-        return 0; 
+        int contador = 0;
+        for (int i = 0; i < cubiculos.length; i++){
+        if (cubiculos[i].vehiculo instanceof Carro)
+        {
+           if (((Carro)cubiculos[i].vehiculo).isRemolque()){
+               contador++;
+           }
+          }
+        }
+        return contador;  
     }
     
     public String reporteVehiculos() { 
