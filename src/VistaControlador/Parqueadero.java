@@ -20,7 +20,15 @@ public class Parqueadero extends javax.swing.JFrame {
     
     
     public int cubiculosDisponibles() {
-        return 0; 
+        int disponibles = 0;
+        
+        for (int i = 0; i < cubiculos.length; i++) {
+            if(cubiculos[i].vehiculo == null) {
+                disponibles++;
+            }
+        }
+        
+        return disponibles;
     } 
     
     public int contarCarros() { 
