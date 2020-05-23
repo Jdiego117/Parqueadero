@@ -12,6 +12,6 @@ import java.util.Date;
  * @author juand
  */
 public class Cubiculo {
-    private Vehiculo vehiculo;
+    public Vehiculo vehiculo;
     private Date hora;
 }

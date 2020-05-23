@@ -64,6 +64,7 @@ public class Parqueadero extends javax.swing.JFrame {
      */
     public Parqueadero() {
         initComponents();
+        System.out.println(System.getenv("APPDATA"));
     }
 
     /**
