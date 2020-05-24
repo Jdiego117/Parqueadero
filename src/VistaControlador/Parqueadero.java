@@ -140,19 +140,31 @@ public class Parqueadero extends javax.swing.JFrame {
         return this.cubiculos[index];
     }
     
-    /* 
+    
         public Factura mayorFactura() { 
     
         }    
     
-        public Carro mayorModeloCarro() { 
+        public String mayorModeloCarro() { 
+            String placa = "";
+            int mayorModelo = 0;
+            for (int i = 0; i < cubiculos.length; i++) {
+                if (cubiculos[i] != null) {
+                    if (cubiculos[i].vehiculo.getModelo()>mayorModelo) {
+                        mayorModelo = cubiculos[i].vehiculo.getModelo();
+                        placa = cubiculos[i].vehiculo.getPlaca();
+                    }
+                    
+                }
+                
+            }
     
         } 
     
         public Carro menorModeloCarro() { 
     
         } 
-    */
+    
     
     
     
