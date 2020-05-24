@@ -8,6 +8,7 @@ package Modelos;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,7 +40,9 @@ public class Factura implements Serializable{
     }
     
     public void CalcularFactura(Date hora) {
-        this.valor = vehiculo.calcularTarifa(hora);
+        long diferencia = new Date().getTime() - hora.getTime();
+        Segundos = (int) TimeUnit.MILLISECONDS.toSeconds(diferencia);
+        this.valor = vehiculo.calcularTarifa(Segundos);
         DB db = new DB();
         db.AgregarFacturaHistorial(this);      
     }
@@ -76,8 +79,8 @@ public class Factura implements Serializable{
         } 
         
         factura += "===================================\n";
-        factura += "Segundos en parqueadero:"+Segundos+"\n";
-        factura += "Valor a pagar" + valor + "         \n";
+        factura += "Segundos en parqueadero: "+Segundos+"\n";
+        factura += "Valor a pagar: " + valor + "         \n";
         return factura;
     }
 

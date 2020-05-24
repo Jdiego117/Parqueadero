@@ -30,7 +30,7 @@ public class Moto extends Vehiculo implements Serializable{
     }
 
     @Override
-    public double calcularTarifa(Date hora) {
+    public double calcularTarifa(int segundos) {
         return 0;
     }
 }

@@ -26,7 +26,7 @@ public abstract class Vehiculo implements Serializable{
     } 
     
 
-    public abstract double calcularTarifa(Date hora);
+    public abstract double calcularTarifa(int segundos);
     
     public String getPlaca() {
         return placa;

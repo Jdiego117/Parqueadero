@@ -29,7 +29,13 @@ public class Carro extends Vehiculo implements Serializable{
     }
 
     @Override
-    public double calcularTarifa(Date hora) {
-        return 0;
+    public double calcularTarifa(int segundos) {
+        double valor = 0.5;
+        double total = valor * segundos;
+        
+        if (isRemolque()) {
+           total += 700; 
+        }
+        return total;
     }
 }
