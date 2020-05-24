@@ -95,24 +95,21 @@ public class Parqueadero extends javax.swing.JFrame {
     } 
     
     
-        public String mayorNroCascos() {
-            String placa = "";
-            int numeroCascos = 0;
-            for (int i = 0; i < cubiculos.length; i++) {
-                if (cubiculos[i] != null) {
-                    if (cubiculos[i].vehiculo instanceof Moto) {
-                        if (((Moto)cubiculos[i].vehiculo).getNroCascos()>numeroCascos) {
-                            placa = cubiculos[i].vehiculo.getPlaca();
-                            numeroCascos= ((Moto)cubiculos[i].vehiculo).getNroCascos();
-                        }
-                        
-                    }
-                    
-                }
-                
-            }
-            return placa;
+    public String mayorNroCascos() {
+        String placa = "";
+        int numeroCascos = 0;
+        for (int i = 0; i < cubiculos.length; i++) {
+            if (cubiculos[i] != null) {
+                if (cubiculos[i].vehiculo instanceof Moto) {
+                    if (((Moto)cubiculos[i].vehiculo).getNroCascos()>numeroCascos) {
+                        placa = cubiculos[i].vehiculo.getPlaca();
+                        numeroCascos= ((Moto)cubiculos[i].vehiculo).getNroCascos();
+                    }       
+                }              
+            }             
         }
+        return placa;
+    }
     
     
     public int contarCarrosRemolque() { 
@@ -157,48 +154,42 @@ public class Parqueadero extends javax.swing.JFrame {
     }
     
     
-        public Factura mayorFactura() { 
+       /* public Factura mayorFactura() { 
     
-        }    
+        }    */
     
-        public String mayorModeloCarro() { 
-            String placa = "";
-            int mayorModelo = 0;
-            for (int i = 0; i < cubiculos.length; i++) {
-                if (cubiculos[i] != null) {
+    public String mayorModeloCarro() { 
+        String placa = "";
+        int mayorModelo = 0;
+        for (int i = 0; i < cubiculos.length; i++) {
+            if (cubiculos[i] != null) {
+                if(cubiculos[i].vehiculo instanceof Carro) {
                     if (cubiculos[i].vehiculo.getModelo()>mayorModelo) {
                         mayorModelo = cubiculos[i].vehiculo.getModelo();
                         placa = cubiculos[i].vehiculo.getPlaca();
                     }
-                    
-                }
-                
-            }
-            return placa;
+                }   
+            }               
+        }
+        return placa;
+    } 
     
-        } 
-    
-        public String menorModeloCarro() { 
-             String nombre = "";
-            int menorModelo = 0;
-            for (int i = 0; i < cubiculos.length; i++) {
-                if (cubiculos[i] != null) {
+    public String menorModeloCarro() { 
+        String nombre = "";
+        int menorModelo = 0;
+        for (int i = 0; i < cubiculos.length; i++) {
+            if (cubiculos[i] != null) {
+                if(cubiculos[i].vehiculo instanceof Carro) {
                     if (cubiculos[i].vehiculo.getModelo()<menorModelo || i==0) {
                         menorModelo = cubiculos[i].vehiculo.getModelo();
                         nombre = cubiculos[i].vehiculo.getConductor().getNombre();
-                    }
-                    
-                }
-                
-            }
-            return nombre;
-    
-        } 
-        
-    
-    
-    
-    
+                    } 
+                }     
+            }          
+        }
+        return nombre;  
+    } 
+
     /**
      * Creates new form Parqueadero
      */
