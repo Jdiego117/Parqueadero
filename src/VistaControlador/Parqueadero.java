@@ -220,6 +220,7 @@ public class Parqueadero extends javax.swing.JFrame {
         mayorBtn = new javax.swing.JButton();
         menorBtn = new javax.swing.JButton();
         mayorCascosBtn = new javax.swing.JButton();
+        modificarBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -315,6 +316,13 @@ public class Parqueadero extends javax.swing.JFrame {
             }
         });
 
+        modificarBtn.setText("Modificar vehiculo");
+        modificarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -333,11 +341,14 @@ public class Parqueadero extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(menorBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(mayorBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(reporteBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(mayorBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addComponent(mayorCascosBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(modificarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(reporteBtn)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -358,7 +369,9 @@ public class Parqueadero extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(menorBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                .addComponent(reporteBtn)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(reporteBtn)
+                    .addComponent(modificarBtn))
                 .addContainerGap())
         );
 
@@ -373,11 +386,6 @@ public class Parqueadero extends javax.swing.JFrame {
     private void expulsarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expulsarBtnActionPerformed
         BuscarEnParqueadero buscarP = new BuscarEnParqueadero(this);
         buscarP.setVisible(true);
-        
-        /*Factura fa = new Factura();
-        fa.CalcularFactura(new Date());
-        textViewer txt = new textViewer(fa.imprimirFactura());
-        txt.setVisible(true);*/
     }//GEN-LAST:event_expulsarBtnActionPerformed
 
     private void reporteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reporteBtnActionPerformed
@@ -435,6 +443,11 @@ public class Parqueadero extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mayorCascosBtnActionPerformed
 
+    private void modificarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarBtnActionPerformed
+        Buscar buscar = new Buscar("actualizar");
+        buscar.setVisible(true);
+    }//GEN-LAST:event_modificarBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -481,6 +494,7 @@ public class Parqueadero extends javax.swing.JFrame {
     private javax.swing.JButton mayorBtn;
     private javax.swing.JButton mayorCascosBtn;
     private javax.swing.JButton menorBtn;
+    private javax.swing.JButton modificarBtn;
     private javax.swing.JLabel nroCarrosTxt;
     private javax.swing.JLabel nroMotosTxt;
     private javax.swing.JLabel parquederoNombre;

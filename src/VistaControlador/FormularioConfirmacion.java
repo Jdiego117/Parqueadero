@@ -34,7 +34,7 @@ public class FormularioConfirmacion extends javax.swing.JFrame {
          this.parqueadero = parqueadero;
          IniciarCampos();
     }
-
+    
     public void IniciarCampos() {
         this.placaTxt.setEnabled(false);
         this.placaTxt.setText(vehiculo.getPlaca());

@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 public class FormularioVehiculo extends javax.swing.JFrame {
 
     Parqueadero parqueadero = null;
+    String action = "";
     
     /**
      * Creates new form FormularioVehiculo
@@ -35,6 +36,35 @@ public class FormularioVehiculo extends javax.swing.JFrame {
         this.remolqueCheck.setEnabled(false);
     }
 
+    public FormularioVehiculo(Vehiculo vehiculo, String action) {
+        initComponents();
+        this.action = action;
+        this.cascosTxt.setEnabled(false);
+        this.remolqueCheck.setEnabled(false);
+        llenarCampos(vehiculo);
+    }
+    
+    public void llenarCampos(Vehiculo veh) {
+        this.placaTxt.setText(veh.getPlaca());
+        this.colorTxt.setText(veh.getColor());
+        this.modeloTxt.setText(String.valueOf(veh.getModelo()));
+        
+        if(veh instanceof Carro) {
+            this.carroRbt.setSelected(true);
+            this.remolqueCheck.setEnabled(true);
+            this.remolqueCheck.setSelected(((Carro) veh).isRemolque());
+        } else {
+            this.motoRbt.setSelected(true);
+            this.cascosTxt.setEnabled(true);
+            this.cascosTxt.setText(String.valueOf(((Moto) veh).getNroCascos()));
+        }
+        
+        this.cedulaTxt.setText(veh.getConductor().getCedula());
+        this.nombreTxt.setText(veh.getConductor().getNombre());
+        this.apellidoTxt.setText(veh.getConductor().getApellido());
+        this.edadTxt.setText(String.valueOf(veh.getConductor().getEdad()));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -334,6 +364,12 @@ public class FormularioVehiculo extends javax.swing.JFrame {
             
             DB db = new DB();
             db.GuardarCarro(vehiculo);
+            
+            if(action.equals("actualizar")) {
+                JOptionPane.showMessageDialog(this, "Vehiculo actualizado");
+                this.setVisible(false);
+                return;
+            }
             FormularioConfirmacion fConfirmacion = new FormularioConfirmacion(vehiculo, this.parqueadero);
             fConfirmacion.setVisible(true);
         } catch(Exception e) {

@@ -10,6 +10,7 @@ import Modelos.Vehiculo;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,14 +19,25 @@ import java.util.logging.Logger;
 public class Buscar extends javax.swing.JFrame {
 
     public Parqueadero parqueadero;
+    public String action = "";
     
     /**
      * Creates new form Buscar
      * @param par
      */
+    
+    public Buscar() {
+        initComponents();
+    }
+    
     public Buscar(Parqueadero parqueadero) {
         this.parqueadero = parqueadero;
         initComponents();
+    }
+    
+    public Buscar(String action) {
+        initComponents();
+        this.action = action;
     }
 
     /**
@@ -98,9 +110,18 @@ public class Buscar extends javax.swing.JFrame {
             Vehiculo veh = db.buscar(placaTxt.getText());
             
             if(veh == null) {
+                if(action.equals("actualizar")) {
+                    JOptionPane.showMessageDialog(this, "El vehiculo no existe");
+                    return; 
+                }
                 FormularioVehiculo fVehiculo = new FormularioVehiculo(placaTxt.getText(), this.parqueadero);
                 fVehiculo.setVisible(true);
             } else {
+                if(action.equals("actualizar")) {
+                    FormularioVehiculo fVehiculo = new FormularioVehiculo(veh, action);
+                    fVehiculo.setVisible(true);
+                    return;
+                }
                 FormularioConfirmacion fConfirmacion = new FormularioConfirmacion(veh, this.parqueadero);
                 fConfirmacion.setVisible(true);
             }           
@@ -143,7 +164,7 @@ public class Buscar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Buscar(null).setVisible(true);
+                new Buscar().setVisible(true);
             }
         });
     }
