@@ -7,6 +7,11 @@ package VistaControlador;
 
 import Modelos.Cubiculo;
 import Modelos.Factura;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -52,7 +57,7 @@ public class FacturaVista extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         parquederoNombre = new javax.swing.JLabel();
         parquederoNombre1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        exportarBtn = new javax.swing.JButton();
         verBtn = new javax.swing.JButton();
         cerrarBtn = new javax.swing.JButton();
 
@@ -71,10 +76,10 @@ public class FacturaVista extends javax.swing.JFrame {
         parquederoNombre1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         parquederoNombre1.setText("Parqueadero c.c");
 
-        jButton1.setText("Exportar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        exportarBtn.setText("Exportar");
+        exportarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                exportarBtnActionPerformed(evt);
             }
         });
 
@@ -98,7 +103,7 @@ public class FacturaVista extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(exportarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(verBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -121,7 +126,7 @@ public class FacturaVista extends javax.swing.JFrame {
                 .addComponent(parquederoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(exportarBtn)
                     .addComponent(verBtn)
                     .addComponent(cerrarBtn))
                 .addGap(26, 26, 26))
@@ -135,9 +140,20 @@ public class FacturaVista extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void exportarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportarBtnActionPerformed
+        String factura = this.factura.imprimirFactura();
+        try {
+            JFileChooser ventana = new JFileChooser();
+            ventana.showSaveDialog(this);
+            String ruta = ventana.getSelectedFile().toString();
+            try (BufferedWriter archivo = new BufferedWriter(new FileWriter(ruta + ".txt"))) {
+                   archivo.write(factura);
+            }
+            JOptionPane.showMessageDialog(this, "El archivo fue guardado correctamente","Informacion",JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "El archivo no fue guardado, operacion invalida","Informacion",JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_exportarBtnActionPerformed
 
     private void verBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verBtnActionPerformed
         textViewer txt = new textViewer(factura.imprimirFactura());
@@ -189,7 +205,7 @@ public class FacturaVista extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cerrarBtn;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton exportarBtn;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel parquederoNombre;
     private javax.swing.JLabel parquederoNombre1;
