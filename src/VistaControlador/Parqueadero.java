@@ -268,13 +268,7 @@ public class Parqueadero extends javax.swing.JFrame {
     }//GEN-LAST:event_agregarBtnActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        DB db = new DB();
-        
-        try {
-            db.Prueba();
-        } catch (IOException ex) {
-            Logger.getLogger(Parqueadero.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
