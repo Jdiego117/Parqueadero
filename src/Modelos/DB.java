@@ -12,6 +12,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,6 +42,40 @@ public class DB {
         return resultado;
     }
     
+    public LinkedList<Vehiculo> obtenerTodosVehiculos() {
+        String[] archivos = ListarCarpeta(DIR + "/vehiculos");
+        
+        if(archivos == null || archivos.length == 0) {
+            return null;
+        }
+        
+        LinkedList<Vehiculo> vehiculos = new LinkedList<Vehiculo>();
+        
+        for (int i = 0; i < archivos.length; i++) {
+            try {
+                FileInputStream fos = new FileInputStream(DIR + "/vehiculos/" + archivos[i]);
+                ObjectInputStream ois = new ObjectInputStream(fos);
+                Vehiculo resultado = (Vehiculo) ois.readObject();
+                vehiculos.add(resultado);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return vehiculos;
+    }
+    
+    public String[] ListarCarpeta(String dir) {
+        File carpeta = new File(dir);
+        String[] listado = carpeta.list();
+        
+        return listado;
+    }
+    
     public void GuardarCarro(Vehiculo vehiculo) {
         try {
             FileOutputStream fos = new FileOutputStream(DIR + "/vehiculos/" + vehiculo.getPlaca() + ".bin");
@@ -51,5 +87,58 @@ public class DB {
         } catch (IOException ex) {
             Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
         }       
+    }
+    
+    public void AgregarFacturaHistorial(Factura factura) {
+        LinkedList<Factura> facturas = CargarHistorialFacturas();
+        if(facturas == null) {
+            facturas = new LinkedList<Factura>();
+        }
+        
+        facturas.add(factura);
+        
+        GuardarHistorialFacturas(facturas);
+    }
+    
+    public void GuardarHistorialFacturas(LinkedList<Factura> facturas) {
+        
+        if(!new File(DIR + "/facturas").exists()) {
+            new File(DIR + "/facturas").mkdirs();
+        }
+        
+        try {
+            FileOutputStream fos = new FileOutputStream(DIR + "/facturas/historial.bin");
+            ObjectOutputStream oss = new ObjectOutputStream(fos);
+            oss.writeObject(facturas);
+            oss.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+    }
+    
+    public LinkedList<Factura> CargarHistorialFacturas() {
+        File file = new File(DIR + "/facturas/historial.bin");
+        
+        if (!file.exists()) {
+            return null;
+        }
+        
+        try {
+            
+            FileInputStream fos = new FileInputStream(DIR + "/facturas/historial.bin");
+            ObjectInputStream ois = new ObjectInputStream(fos);
+            LinkedList<Factura> resultado = (LinkedList<Factura>) ois.readObject();
+            return resultado;
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

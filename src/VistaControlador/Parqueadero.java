@@ -10,10 +10,16 @@ import Modelos.Cubiculo;
 import Modelos.DB;
 import Modelos.Factura;
 import Modelos.Moto;
+import Modelos.Vehiculo;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -116,6 +122,24 @@ public class Parqueadero extends javax.swing.JFrame {
     public String reporteVehiculos() { 
         return ""; 
     } 
+    
+    public int buscarCubiculo(String placa) {
+        int index = -1;
+       
+        for (int i = 0; i < cubiculos.length; i++) {
+            if(cubiculos[i] != null) {
+                if(cubiculos[i].getVehiculo().getPlaca().equals(placa)) {
+                    index = i;
+                }
+            }
+        }
+        return index;
+    }
+    
+    public Cubiculo getCubiculo(int index) {
+        return this.cubiculos[index];
+    }
+    
     /* 
         public Factura mayorFactura() { 
     
@@ -159,7 +183,8 @@ public class Parqueadero extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         nroMotosTxt = new javax.swing.JLabel();
         agregarBtn = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        expulsarBtn = new javax.swing.JButton();
+        reporteBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -220,10 +245,17 @@ public class Parqueadero extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Expulsar vehiculo");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        expulsarBtn.setText("Expulsar vehiculo");
+        expulsarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                expulsarBtnActionPerformed(evt);
+            }
+        });
+
+        reporteBtn.setText("Reporte de los vehiculos");
+        reporteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reporteBtnActionPerformed(evt);
             }
         });
 
@@ -241,7 +273,8 @@ public class Parqueadero extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(agregarBtn)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2)))
+                                .addComponent(expulsarBtn))
+                            .addComponent(reporteBtn))
                         .addGap(0, 134, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -255,8 +288,10 @@ public class Parqueadero extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(agregarBtn)
-                    .addComponent(jButton2))
-                .addContainerGap(30, Short.MAX_VALUE))
+                    .addComponent(expulsarBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addComponent(reporteBtn)
+                .addContainerGap())
         );
 
         pack();
@@ -267,9 +302,43 @@ public class Parqueadero extends javax.swing.JFrame {
         buscar.setVisible(true);
     }//GEN-LAST:event_agregarBtnActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void expulsarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expulsarBtnActionPerformed
+        BuscarEnParqueadero buscarP = new BuscarEnParqueadero(this);
+        buscarP.setVisible(true);
+        
+        /*Factura fa = new Factura();
+        fa.CalcularFactura(new Date());
+        textViewer txt = new textViewer(fa.imprimirFactura());
+        txt.setVisible(true);*/
+    }//GEN-LAST:event_expulsarBtnActionPerformed
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void reporteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reporteBtnActionPerformed
+        DB db = new DB();
+        LinkedList<Vehiculo> vehiculos = db.obtenerTodosVehiculos();
+        
+        String reporte = "Placa;Color;Modelo;Tipo;Dueño;Cedula;Edad\n";
+        
+        for (int i = 0; i < vehiculos.size(); i++) {
+            Vehiculo veh = vehiculos.get(i);
+            if(veh instanceof Carro) {
+                reporte += veh.getPlaca()+";"+veh.getColor()+";"+veh.getModelo()+";Carro;"+veh.getConductor().getNombre()+";"+veh.getConductor().getCedula()+";"+veh.getConductor().getEdad()+";\n";
+            } else {
+                reporte += veh.getPlaca()+";"+veh.getColor()+";"+veh.getModelo()+";Moto;"+veh.getConductor().getNombre()+";"+veh.getConductor().getCedula()+";"+veh.getConductor().getEdad()+";\n";
+            }
+        }
+        
+        try {
+            JFileChooser ventana = new JFileChooser();
+            ventana.showSaveDialog(this);
+            String ruta = ventana.getSelectedFile().toString();
+            try (BufferedWriter archivo = new BufferedWriter(new FileWriter(ruta + ".csv"))) {
+                   archivo.write(reporte);
+            }
+            JOptionPane.showMessageDialog(this, "El archivo fue guardado correctamente","Informacion",JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "El archivo no fue guardado, operacion invalida","Informacion",JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_reporteBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -309,7 +378,7 @@ public class Parqueadero extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarBtn;
     private javax.swing.JLabel cubiculosDisponiblesTxt;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton expulsarBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -317,5 +386,6 @@ public class Parqueadero extends javax.swing.JFrame {
     private javax.swing.JLabel nroCarrosTxt;
     private javax.swing.JLabel nroMotosTxt;
     private javax.swing.JLabel parquederoNombre;
+    private javax.swing.JButton reporteBtn;
     // End of variables declaration//GEN-END:variables
 }

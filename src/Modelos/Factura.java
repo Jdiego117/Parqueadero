@@ -5,21 +5,80 @@
  */
 package Modelos;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author juand
  */
-public class Factura {
+public class Factura implements Serializable{
     private Conductor cliente;
     private Vehiculo vehiculo;
-    private int Segundos;
-    private double valor;
+    private int Segundos = 0;
+    private double valor = 0;
 
-    public Factura(Conductor cliente, Vehiculo vehiculo, int Segundos, double valor) {
-        this.cliente = cliente;
+    public Factura(Vehiculo vehiculo) {
         this.vehiculo = vehiculo;
-        this.Segundos = Segundos;
-        this.valor = valor;
+        this.cliente = vehiculo.getConductor();
+    }
+    
+    public Factura() {
+        DB db = new DB();
+        try {
+            this.vehiculo = db.buscar("123");
+            this.cliente = this.vehiculo.getConductor();
+        } catch (IOException ex) {
+            Logger.getLogger(Factura.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Factura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void CalcularFactura(Date hora) {
+        this.valor = vehiculo.calcularTarifa(hora);
+        DB db = new DB();
+        db.AgregarFacturaHistorial(this);      
+    }
+    
+    public String imprimirFactura() {
+        String factura = "";
+        
+        factura += "===================================\n";
+        factura += "===Parqueadero centro comercial====\n";
+        factura += "===================================\n";
+        factura += "C.C: " + cliente.getCedula() + "   \n";
+        factura += "Conductor: " +cliente.getNombre()+"\n";
+        factura += "Edad: " + cliente.getEdad() + "    \n";
+        factura += "===================================\n";
+        
+        if(vehiculo instanceof Carro){
+            factura += "Vehiculo: Carro           \n";
+        } else {
+            factura += "Vehiculo: Moto           \n";
+        }
+            
+        factura += "Placa: " + vehiculo.getPlaca() + " \n";
+        factura += "Color: " + vehiculo.getColor() + " \n";
+        factura += "Modelo: " + vehiculo.getModelo()+ "\n";
+        
+        if(vehiculo instanceof Carro){
+            if(((Carro) vehiculo).isRemolque()) {
+                factura += "Tiene remolque: SI\n";
+            } else {
+                factura += "Tiene remolque: NO\n";
+            }
+        } else {
+            factura += "Cascos: "+ ((Moto)vehiculo).getNroCascos()+"\n";
+        } 
+        
+        factura += "===================================\n";
+        factura += "Segundos en parqueadero:"+Segundos+"\n";
+        factura += "Valor a pagar" + valor + "         \n";
+        return factura;
     }
 
     public Conductor getCliente() {
