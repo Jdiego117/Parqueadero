@@ -7,9 +7,13 @@ package VistaControlador;
 
 import Modelos.Carro;
 import Modelos.Cubiculo;
+import Modelos.DB;
 import Modelos.Factura;
 import Modelos.Moto;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,25 +24,54 @@ public class Parqueadero extends javax.swing.JFrame {
     public Cubiculo cubiculos[] = new Cubiculo[10]; 
     public LinkedList<Factura> facturas; 
     
+    public String nombre = "Parqueadero c.c";
     
     public int cubiculosDisponibles() {
-        int disponibles = 0;
-        
+        int disponibles = 0;       
         for (int i = 0; i < cubiculos.length; i++) {
-            if(cubiculos[i].vehiculo == null) {
+            if(cubiculos[i] == null) {
                 disponibles++;
             }
-        }
-        
+        }        
         return disponibles;
     } 
+    
+    public int encontrarCubiculo() {
+        int res = -1;
+        int i = 0;
+        while(i < this.cubiculos.length) {
+            System.out.println(i);
+            System.out.println(cubiculos[i]);
+            if(cubiculos[i] == null) {
+                res = i;
+                break;
+            }
+            i++;
+        }
+        return res;
+    }
+    
+    public void setCubiculo(int index, Cubiculo cubiculo) {
+        this.cubiculos[index] = cubiculo; 
+    }
+    
+    public void actualizarInformacion() {
+        int disponibles = cubiculosDisponibles();
+        this.cubiculosDisponiblesTxt.setText(String.valueOf(disponibles) + "/" + cubiculos.length);
+        int carros = contarCarros();
+        this.nroCarrosTxt.setText(String.valueOf(carros));
+        int motos = contarMotos();
+        this.nroMotosTxt.setText(String.valueOf(motos));  
+    }
     
     public int contarCarros() { 
         int contador = 0;
         for (int i = 0; i < cubiculos.length; i++){
-        if (cubiculos[i].vehiculo instanceof Carro){
-            contador++;
-          }
+            if(cubiculos[i] != null) {
+                if (cubiculos[i].vehiculo instanceof Carro){
+                    contador++;
+                }
+            }
         }
         return contador; 
     } 
@@ -46,9 +79,11 @@ public class Parqueadero extends javax.swing.JFrame {
     public int contarMotos() { 
         int contador = 0;
         for (int i = 0; i < cubiculos.length; i++){
-        if (cubiculos[i].vehiculo instanceof Moto){
-            contador++;
-          }
+            if(cubiculos[i] != null) {
+                if (cubiculos[i].vehiculo instanceof Moto){
+                    contador++;
+                }
+            }
         }
         return contador; 
     } 
@@ -61,14 +96,21 @@ public class Parqueadero extends javax.swing.JFrame {
     public int contarCarrosRemolque() { 
         int contador = 0;
         for (int i = 0; i < cubiculos.length; i++){
-        if (cubiculos[i].vehiculo instanceof Carro)
-        {
-           if (((Carro)cubiculos[i].vehiculo).isRemolque()){
-               contador++;
-           }
-          }
+            if (cubiculos[i].vehiculo instanceof Carro) {
+                if (((Carro)cubiculos[i].vehiculo).isRemolque()){
+                    contador++;
+                }
+            }
         }
         return contador;  
+    }
+    
+    public void iniciarCubiculos() {
+        for (int i = 0; i < 10; i++) {
+            this.cubiculos[i] = null;
+        }
+        
+        System.out.println(cubiculos[3]);
     }
     
     public String reporteVehiculos() { 
@@ -96,6 +138,7 @@ public class Parqueadero extends javax.swing.JFrame {
     public Parqueadero() {
         initComponents();
         System.out.println(System.getenv("APPDATA"));
+        iniciarCubiculos();
     }
 
     /**
@@ -115,13 +158,13 @@ public class Parqueadero extends javax.swing.JFrame {
         nroCarrosTxt = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         nroMotosTxt = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        agregarBtn = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         parquederoNombre.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        parquederoNombre.setText("Parquedero c.c");
+        parquederoNombre.setText("Parqueadero c.c");
 
         jLabel1.setText("Cubiculos disponibles:");
 
@@ -170,9 +213,19 @@ public class Parqueadero extends javax.swing.JFrame {
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Agregar vehiculo");
+        agregarBtn.setText("Agregar vehiculo");
+        agregarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarBtnActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Expulsar vehiculo");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -186,7 +239,7 @@ public class Parqueadero extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(parquederoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(agregarBtn)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton2)))
                         .addGap(0, 134, Short.MAX_VALUE)))
@@ -201,13 +254,28 @@ public class Parqueadero extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(agregarBtn)
                     .addComponent(jButton2))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void agregarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarBtnActionPerformed
+        Buscar buscar = new Buscar(this);
+        buscar.setVisible(true);
+    }//GEN-LAST:event_agregarBtnActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        DB db = new DB();
+        
+        try {
+            db.Prueba();
+        } catch (IOException ex) {
+            Logger.getLogger(Parqueadero.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -245,8 +313,8 @@ public class Parqueadero extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton agregarBtn;
     private javax.swing.JLabel cubiculosDisponiblesTxt;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

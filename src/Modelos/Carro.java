@@ -5,15 +5,18 @@
  */
 package Modelos;
 
+import java.io.Serializable;
+
 /**
  *
  * @author juand
  */
-public class Carro extends Vehiculo {
+public class Carro extends Vehiculo implements Serializable{
     private boolean remolque;
 
-    public Carro(String placa, String color, int modelo, Conductor conductor) {
+    public Carro(String placa, String color, int modelo, Conductor conductor, boolean remolque) {
         super(placa, color, modelo, conductor);
+        this.remolque = remolque;
     }
 
     public boolean isRemolque() {

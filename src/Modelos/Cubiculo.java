@@ -14,4 +14,30 @@ import java.util.Date;
 public class Cubiculo {
     public Vehiculo vehiculo;
     private Date hora;
+
+    public Cubiculo() {
+    }
+
+    public Cubiculo(Vehiculo vehiculo, Date hora) {
+        this.vehiculo = vehiculo;
+        this.hora = hora;
+    }
+    
+    public Vehiculo getVehiculo() {
+        return vehiculo;
+    }
+
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo;
+    }
+
+    public Date getHora() {
+        return hora;
+    }
+
+    public void setHora(Date hora) {
+        this.hora = hora;
+    }
+    
+    
 }

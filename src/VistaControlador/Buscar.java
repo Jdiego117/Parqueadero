@@ -5,16 +5,26 @@
  */
 package VistaControlador;
 
+import Modelos.DB;
+import Modelos.Vehiculo;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Evelin
  */
 public class Buscar extends javax.swing.JFrame {
 
+    public Parqueadero parqueadero;
+    
     /**
      * Creates new form Buscar
+     * @param par
      */
-    public Buscar() {
+    public Buscar(Parqueadero parqueadero) {
+        this.parqueadero = parqueadero;
         initComponents();
     }
 
@@ -32,7 +42,7 @@ public class Buscar extends javax.swing.JFrame {
         placaTxt = new javax.swing.JTextField();
         buscarBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         parquederoNombre.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         parquederoNombre.setText("Parqueadero c.c");
@@ -40,6 +50,11 @@ public class Buscar extends javax.swing.JFrame {
         jLabel1.setText("Placa");
 
         buscarBtn.setText("Buscar");
+        buscarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -77,6 +92,27 @@ public class Buscar extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
+        DB db = new DB();
+        try {
+            Vehiculo veh = db.buscar(placaTxt.getText());
+            
+            if(veh == null) {
+                FormularioVehiculo fVehiculo = new FormularioVehiculo(placaTxt.getText(), this.parqueadero);
+                fVehiculo.setVisible(true);
+            } else {
+                FormularioConfirmacion fConfirmacion = new FormularioConfirmacion(veh, this.parqueadero);
+                fConfirmacion.setVisible(true);
+            }           
+        } catch (IOException ex) {
+            Logger.getLogger(Parqueadero.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Parqueadero.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        this.setVisible(false);
+    }//GEN-LAST:event_buscarBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -107,7 +143,7 @@ public class Buscar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Buscar().setVisible(true);
+                new Buscar(null).setVisible(true);
             }
         });
     }

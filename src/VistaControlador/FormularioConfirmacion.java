@@ -5,6 +5,12 @@
  */
 package VistaControlador;
 
+import Modelos.Carro;
+import Modelos.Cubiculo;
+import Modelos.Moto;
+import Modelos.Vehiculo;
+import java.util.Date;
+
 /**
  *
  * @author Evelin
@@ -14,10 +20,42 @@ public class FormularioConfirmacion extends javax.swing.JFrame {
     /**
      * Creates new form FormularioConfirmacion
      */
+    
+    public Vehiculo vehiculo = null;
+    public Parqueadero parqueadero = null;
+    
     public FormularioConfirmacion() {
         initComponents();
     }
+    
+    public FormularioConfirmacion(Vehiculo vehiculo, Parqueadero parqueadero) {
+         initComponents();
+         this.vehiculo = vehiculo;
+         this.parqueadero = parqueadero;
+         IniciarCampos();
+    }
 
+    public void IniciarCampos() {
+        this.placaTxt.setEnabled(false);
+        this.placaTxt.setText(vehiculo.getPlaca());
+        this.nombreTxt.setEnabled(false);
+        this.nombreTxt.setText(vehiculo.getConductor().getNombre());
+        
+        this.carroRbn.setEnabled(false);
+        this.motoRbn.setEnabled(false);
+        
+        this.cascosTxt.setEnabled(false);
+        this.remolqueCheck.setEnabled(false);
+        
+        if(this.vehiculo instanceof Carro) {
+            this.carroRbn.setSelected(true);  
+            this.remolqueCheck.setSelected(((Carro)this.vehiculo).isRemolque());
+        } else {
+            this.motoRbn.setSelected(true);
+            this.cascosTxt.setText(String.valueOf(((Moto) this.vehiculo).getNroCascos()));
+        }     
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,14 +73,14 @@ public class FormularioConfirmacion extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         carroRbn = new javax.swing.JRadioButton();
         motoRbn = new javax.swing.JRadioButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        remolqueCheck = new javax.swing.JCheckBox();
         cascosTxt = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         confirmarBtn = new javax.swing.JButton();
         cancelarBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         parquederoNombre.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         parquederoNombre.setText("Parqueadero c.c");
@@ -67,13 +105,18 @@ public class FormularioConfirmacion extends javax.swing.JFrame {
             }
         });
 
-        jCheckBox1.setText("Tiene remolque?");
+        remolqueCheck.setText("Tiene remolque?");
 
         jLabel4.setText("Remolque");
 
         jLabel5.setText("Nro Cascos");
 
         confirmarBtn.setText("Confirmar Ingreso");
+        confirmarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmarBtnActionPerformed(evt);
+            }
+        });
 
         cancelarBtn.setText("Cancelar");
         cancelarBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -112,7 +155,7 @@ public class FormularioConfirmacion extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(cancelarBtn)
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jCheckBox1)
+                                                .addComponent(remolqueCheck)
                                                 .addGroup(layout.createSequentialGroup()
                                                     .addComponent(carroRbn)
                                                     .addGap(18, 18, 18)
@@ -142,7 +185,7 @@ public class FormularioConfirmacion extends javax.swing.JFrame {
                             .addComponent(carroRbn)
                             .addComponent(motoRbn))
                         .addGap(18, 18, 18)
-                        .addComponent(jCheckBox1))
+                        .addComponent(remolqueCheck))
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -167,8 +210,20 @@ public class FormularioConfirmacion extends javax.swing.JFrame {
     }//GEN-LAST:event_carroRbnActionPerformed
 
     private void cancelarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarBtnActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_cancelarBtnActionPerformed
+
+    private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
+        
+        int index = this.parqueadero.encontrarCubiculo();
+        
+        System.out.println(index);
+        Cubiculo cubiculo = new Cubiculo(this.vehiculo, new Date());
+        System.out.println(cubiculo);
+        parqueadero.setCubiculo(index, cubiculo);
+        parqueadero.actualizarInformacion();
+        this.setVisible(false);
+    }//GEN-LAST:event_confirmarBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,7 +265,6 @@ public class FormularioConfirmacion extends javax.swing.JFrame {
     private javax.swing.JRadioButton carroRbn;
     private javax.swing.JTextField cascosTxt;
     private javax.swing.JButton confirmarBtn;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -220,5 +274,6 @@ public class FormularioConfirmacion extends javax.swing.JFrame {
     private javax.swing.JTextField nombreTxt;
     private javax.swing.JLabel parquederoNombre;
     private javax.swing.JTextField placaTxt;
+    private javax.swing.JCheckBox remolqueCheck;
     // End of variables declaration//GEN-END:variables
 }

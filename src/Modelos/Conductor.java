@@ -5,11 +5,13 @@
  */
 package Modelos;
 
+import java.io.Serializable;
+
 /**
  *
  * @author juand
  */
-public class Conductor {
+public class Conductor implements Serializable{
     private String cedula;
     private String nombre;
     private String apellido;

@@ -5,15 +5,18 @@
  */
 package Modelos;
 
+import java.io.Serializable;
+
 /**
  *
  * @author juand
  */
-public class Moto extends Vehiculo{
+public class Moto extends Vehiculo implements Serializable{
     private int nroCascos;
 
-    public Moto(String placa, String color, int modelo, Conductor conductor) {
+    public Moto(String placa, String color, int modelo, Conductor conductor, int nroCascos) {
         super(placa, color, modelo, conductor);
+        this.nroCascos = nroCascos;
     }
 
 

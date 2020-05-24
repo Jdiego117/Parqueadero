@@ -5,11 +5,13 @@
  */
 package Modelos;
 
+import java.io.Serializable;
+
 /**
  *
  * @author juand
  */
-public class Vehiculo {
+public class Vehiculo implements Serializable{
     private String placa;
     private String color;
     private int modelo;
@@ -44,6 +46,14 @@ public class Vehiculo {
 
     public void setModelo(int modelo) {
         this.modelo = modelo;
+    }
+
+    public Conductor getConductor() {
+        return conductor;
+    }
+
+    public void setConductor(Conductor conductor) {
+        this.conductor = conductor;
     }
     
     
