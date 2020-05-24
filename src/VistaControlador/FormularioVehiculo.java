@@ -31,6 +31,8 @@ public class FormularioVehiculo extends javax.swing.JFrame {
         initComponents();
         this.placaTxt.setText(placa);
         this.parqueadero = parqueadero;
+        this.cascosTxt.setEnabled(false);
+        this.remolqueCheck.setEnabled(false);
     }
 
     /**
@@ -100,6 +102,11 @@ public class FormularioVehiculo extends javax.swing.JFrame {
         });
 
         motoRbt.setText("Moto");
+        motoRbt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                motoRbtActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Remolque");
 
@@ -274,7 +281,9 @@ public class FormularioVehiculo extends javax.swing.JFrame {
     }//GEN-LAST:event_modeloTxtActionPerformed
 
     private void carroRbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carroRbtActionPerformed
-        // TODO add your handling code here:
+        this.motoRbt.setSelected(false);
+        this.cascosTxt.setEnabled(false);
+        this.remolqueCheck.setEnabled(true);
     }//GEN-LAST:event_carroRbtActionPerformed
 
     private void remolqueCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remolqueCheckActionPerformed
@@ -337,6 +346,12 @@ public class FormularioVehiculo extends javax.swing.JFrame {
     private void placaTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_placaTxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_placaTxtActionPerformed
+
+    private void motoRbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_motoRbtActionPerformed
+       this.carroRbt.setSelected(false);
+       this.remolqueCheck.setEnabled(false);
+       this.cascosTxt.setEnabled(true);
+    }//GEN-LAST:event_motoRbtActionPerformed
 
     /**
      * @param args the command line arguments
