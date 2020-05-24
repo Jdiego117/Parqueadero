@@ -93,8 +93,7 @@ public class Parqueadero extends javax.swing.JFrame {
         }
         return contador; 
     } 
-    
-    
+      
     public String mayorNroCascos() {
         String placa = "";
         int numeroCascos = 0;
@@ -110,8 +109,7 @@ public class Parqueadero extends javax.swing.JFrame {
         }
         return placa;
     }
-    
-    
+      
     public int contarCarrosRemolque() { 
         int contador = 0;
         for (int i = 0; i < cubiculos.length; i++){
@@ -219,6 +217,9 @@ public class Parqueadero extends javax.swing.JFrame {
         agregarBtn = new javax.swing.JButton();
         expulsarBtn = new javax.swing.JButton();
         reporteBtn = new javax.swing.JButton();
+        mayorBtn = new javax.swing.JButton();
+        menorBtn = new javax.swing.JButton();
+        mayorCascosBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -293,6 +294,27 @@ public class Parqueadero extends javax.swing.JFrame {
             }
         });
 
+        mayorBtn.setText("Carro de mayor modelo");
+        mayorBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mayorBtnActionPerformed(evt);
+            }
+        });
+
+        menorBtn.setText("Carro con menor modelo");
+        menorBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menorBtnActionPerformed(evt);
+            }
+        });
+
+        mayorCascosBtn.setText("Moto con mas cascos");
+        mayorCascosBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mayorCascosBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -308,8 +330,14 @@ public class Parqueadero extends javax.swing.JFrame {
                                 .addComponent(agregarBtn)
                                 .addGap(18, 18, 18)
                                 .addComponent(expulsarBtn))
-                            .addComponent(reporteBtn))
-                        .addGap(0, 134, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(menorBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(mayorBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(reporteBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addComponent(mayorCascosBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -323,7 +351,13 @@ public class Parqueadero extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(agregarBtn)
                     .addComponent(expulsarBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mayorBtn)
+                    .addComponent(mayorCascosBtn))
+                .addGap(18, 18, 18)
+                .addComponent(menorBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(reporteBtn)
                 .addContainerGap())
         );
@@ -374,6 +408,33 @@ public class Parqueadero extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_reporteBtnActionPerformed
 
+    private void mayorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mayorBtnActionPerformed
+        String placa = mayorModeloCarro();
+        if (placa == "") {
+            JOptionPane.showMessageDialog(this, "No hay carros");
+        } else {
+            JOptionPane.showMessageDialog(this, "La placa del carro con el mayor modelo es:" + placa);
+        }
+    }//GEN-LAST:event_mayorBtnActionPerformed
+
+    private void menorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menorBtnActionPerformed
+        String nombre = menorModeloCarro();
+        if (nombre == "") {
+            JOptionPane.showMessageDialog(this, "No hay carros");
+        } else {
+            JOptionPane.showMessageDialog(this, "El nombre de la persona con el carro de menor modelo es:" + nombre);
+        }
+    }//GEN-LAST:event_menorBtnActionPerformed
+
+    private void mayorCascosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mayorCascosBtnActionPerformed
+        String placa = mayorNroCascos();
+        if (placa == "") {
+            JOptionPane.showMessageDialog(this, "No hay motos");
+        } else {
+            JOptionPane.showMessageDialog(this, "La placa de la moto con mas cascos es:" + placa);
+        }
+    }//GEN-LAST:event_mayorCascosBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -417,6 +478,9 @@ public class Parqueadero extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton mayorBtn;
+    private javax.swing.JButton mayorCascosBtn;
+    private javax.swing.JButton menorBtn;
     private javax.swing.JLabel nroCarrosTxt;
     private javax.swing.JLabel nroMotosTxt;
     private javax.swing.JLabel parquederoNombre;
