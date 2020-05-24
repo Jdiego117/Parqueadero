@@ -94,10 +94,26 @@ public class Parqueadero extends javax.swing.JFrame {
         return contador; 
     } 
     
-    /* 
-        public Moto mayorNroCascos() {
+    
+        public String mayorNroCascos() {
+            String placa = "";
+            int numeroCascos = 0;
+            for (int i = 0; i < cubiculos.length; i++) {
+                if (cubiculos[i] != null) {
+                    if (cubiculos[i].vehiculo instanceof Moto) {
+                        if (((Moto)cubiculos[i].vehiculo).getNroCascos()>numeroCascos) {
+                            placa = cubiculos[i].vehiculo.getPlaca();
+                            numeroCascos= ((Moto)cubiculos[i].vehiculo).getNroCascos();
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            return placa;
         }
-    */ 
+    
     
     public int contarCarrosRemolque() { 
         int contador = 0;
@@ -158,12 +174,27 @@ public class Parqueadero extends javax.swing.JFrame {
                 }
                 
             }
+            return placa;
     
         } 
     
-        public Carro menorModeloCarro() { 
+        public String menorModeloCarro() { 
+             String nombre = "";
+            int menorModelo = 0;
+            for (int i = 0; i < cubiculos.length; i++) {
+                if (cubiculos[i] != null) {
+                    if (cubiculos[i].vehiculo.getModelo()<menorModelo || i==0) {
+                        menorModelo = cubiculos[i].vehiculo.getModelo();
+                        nombre = cubiculos[i].vehiculo.getConductor().getNombre();
+                    }
+                    
+                }
+                
+            }
+            return nombre;
     
         } 
+        
     
     
     
