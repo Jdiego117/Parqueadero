@@ -52,12 +52,4 @@ public class DB {
             Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
         }       
     }
-    
-    public void Prueba() throws FileNotFoundException, IOException {
-        Vehiculo veh = new Vehiculo("jaja", "amarillo", 2020, new Conductor("asdasd", "juan", "duque", 18));
-        FileOutputStream fos = new FileOutputStream(DIR + "/vehiculos/" + veh.getPlaca() + ".bin");
-        ObjectOutputStream oss = new ObjectOutputStream(fos);
-        oss.writeObject(veh);
-        oss.close();
-    }
 }

@@ -6,6 +6,7 @@
 package Modelos;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -26,5 +27,10 @@ public class Moto extends Vehiculo implements Serializable{
 
     public void setNroCascos(int nroCascos) {
         this.nroCascos = nroCascos;
+    }
+
+    @Override
+    public double calcularTarifa(Date hora) {
+        return 0;
     }
 }

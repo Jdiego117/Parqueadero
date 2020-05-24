@@ -6,6 +6,7 @@
 package Modelos;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -25,5 +26,10 @@ public class Carro extends Vehiculo implements Serializable{
 
     public void setRemolque(boolean remolque) {
         this.remolque = remolque;
+    }
+
+    @Override
+    public double calcularTarifa(Date hora) {
+        return 0;
     }
 }

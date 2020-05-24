@@ -6,12 +6,13 @@
 package Modelos;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
  * @author juand
  */
-public class Vehiculo implements Serializable{
+public abstract class Vehiculo implements Serializable{
     private String placa;
     private String color;
     private int modelo;
@@ -22,8 +23,11 @@ public class Vehiculo implements Serializable{
         this.color = color;
         this.modelo = modelo;
         this.conductor = conductor;
-    }
+    } 
+    
 
+    public abstract double calcularTarifa(Date hora);
+    
     public String getPlaca() {
         return placa;
     }
