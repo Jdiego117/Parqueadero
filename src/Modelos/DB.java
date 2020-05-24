@@ -77,6 +77,9 @@ public class DB {
     }
     
     public void GuardarCarro(Vehiculo vehiculo) {
+        if(!new File(DIR + "/vehiculos").exists()) {
+            new File(DIR + "/vehiculos").mkdirs();
+        }
         try {
             FileOutputStream fos = new FileOutputStream(DIR + "/vehiculos/" + vehiculo.getPlaca() + ".bin");
             ObjectOutputStream oss = new ObjectOutputStream(fos);
