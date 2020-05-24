@@ -41,7 +41,10 @@
                                   <Component id="mayorBtn" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="mayorCascosBtn" min="-2" pref="149" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="mayorCascosBtn" min="-2" pref="149" max="-2" attributes="0"/>
+                                  <Component id="mayorPagoBtn" min="-2" pref="149" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -74,8 +77,11 @@
                   <Component id="mayorCascosBtn" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="menorBtn" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="63" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="menorBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="mayorPagoBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="57" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="reporteBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="modificarBtn" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -105,9 +111,11 @@
                       <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="nroRemolquesTxt" min="-2" max="-2" attributes="0"/>
                       <Component id="nroMotosTxt" min="-2" max="-2" attributes="0"/>
                       <Component id="nroCarrosTxt" min="-2" max="-2" attributes="0"/>
                       <Component id="cubiculosDisponiblesTxt" min="-2" max="-2" attributes="0"/>
@@ -134,7 +142,12 @@
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="nroMotosTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="25" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="nroRemolquesTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -168,6 +181,16 @@
         <Component class="javax.swing.JLabel" name="nroMotosTxt">
           <Properties>
             <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="nroRemolquesTxt">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel4">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Carros con remolque:"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -226,6 +249,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="modificarBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="mayorPagoBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Mayor pago"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mayorPagoBtnActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

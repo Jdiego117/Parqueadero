@@ -28,7 +28,6 @@ import javax.swing.JOptionPane;
 public class Parqueadero extends javax.swing.JFrame {
 
     public Cubiculo cubiculos[] = new Cubiculo[10]; 
-    public LinkedList<Factura> facturas; 
     
     public String nombre = "Parqueadero c.c";
     
@@ -68,6 +67,7 @@ public class Parqueadero extends javax.swing.JFrame {
         this.nroCarrosTxt.setText(String.valueOf(carros));
         int motos = contarMotos();
         this.nroMotosTxt.setText(String.valueOf(motos));  
+        this.nroRemolquesTxt.setText(String.valueOf(contarCarrosRemolque()));
     }
     
     public int contarCarros() { 
@@ -113,11 +113,13 @@ public class Parqueadero extends javax.swing.JFrame {
     public int contarCarrosRemolque() { 
         int contador = 0;
         for (int i = 0; i < cubiculos.length; i++){
-            if (cubiculos[i].vehiculo instanceof Carro) {
-                if (((Carro)cubiculos[i].vehiculo).isRemolque()){
-                    contador++;
-                }
-            }
+            if(cubiculos[i] != null) {
+                if (cubiculos[i].vehiculo instanceof Carro) {
+                    if (((Carro)cubiculos[i].vehiculo).isRemolque()){
+                        contador++;
+                    }
+                }    
+            } 
         }
         return contador;  
     }
@@ -152,9 +154,21 @@ public class Parqueadero extends javax.swing.JFrame {
     }
     
     
-       /* public Factura mayorFactura() { 
-    
-        }    */
+    public String mayorFactura() { 
+        String nombre = "";
+        double mayor = 0;
+        DB db = new DB();
+        LinkedList<Factura> facturas = db.CargarHistorialFacturas();
+        
+        for (int i = 0; i < facturas.size(); i++) {
+            if(facturas.get(i).getValor() > mayor) {
+                mayor = facturas.get(i).getValor();
+                nombre = facturas.get(i).getCliente().getNombre();
+            }
+        }
+        
+        return nombre;
+    }
     
     public String mayorModeloCarro() { 
         String placa = "";
@@ -214,6 +228,8 @@ public class Parqueadero extends javax.swing.JFrame {
         nroCarrosTxt = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         nroMotosTxt = new javax.swing.JLabel();
+        nroRemolquesTxt = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         agregarBtn = new javax.swing.JButton();
         expulsarBtn = new javax.swing.JButton();
         reporteBtn = new javax.swing.JButton();
@@ -221,6 +237,7 @@ public class Parqueadero extends javax.swing.JFrame {
         menorBtn = new javax.swing.JButton();
         mayorCascosBtn = new javax.swing.JButton();
         modificarBtn = new javax.swing.JButton();
+        mayorPagoBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -239,6 +256,10 @@ public class Parqueadero extends javax.swing.JFrame {
 
         nroMotosTxt.setText("0");
 
+        nroRemolquesTxt.setText("0");
+
+        jLabel4.setText("Carros con remolque:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -248,9 +269,11 @@ public class Parqueadero extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nroRemolquesTxt)
                     .addComponent(nroMotosTxt)
                     .addComponent(nroCarrosTxt)
                     .addComponent(cubiculosDisponiblesTxt))
@@ -271,7 +294,11 @@ public class Parqueadero extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(nroMotosTxt))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(nroRemolquesTxt))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         agregarBtn.setText("Agregar vehiculo");
@@ -323,6 +350,13 @@ public class Parqueadero extends javax.swing.JFrame {
             }
         });
 
+        mayorPagoBtn.setText("Mayor pago");
+        mayorPagoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mayorPagoBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -343,7 +377,9 @@ public class Parqueadero extends javax.swing.JFrame {
                                     .addComponent(menorBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(mayorBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addComponent(mayorCascosBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(mayorCascosBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(mayorPagoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(modificarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -367,8 +403,10 @@ public class Parqueadero extends javax.swing.JFrame {
                     .addComponent(mayorBtn)
                     .addComponent(mayorCascosBtn))
                 .addGap(18, 18, 18)
-                .addComponent(menorBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(menorBtn)
+                    .addComponent(mayorPagoBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(reporteBtn)
                     .addComponent(modificarBtn))
@@ -448,6 +486,15 @@ public class Parqueadero extends javax.swing.JFrame {
         buscar.setVisible(true);
     }//GEN-LAST:event_modificarBtnActionPerformed
 
+    private void mayorPagoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mayorPagoBtnActionPerformed
+        String nombre = mayorFactura();
+        if (nombre == "") {
+            JOptionPane.showMessageDialog(this, "No hay historial de facturas aun");
+        } else {
+            JOptionPane.showMessageDialog(this, "La persona que mas ha pagado por un servicio es: " + nombre);
+        }
+    }//GEN-LAST:event_mayorPagoBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -490,13 +537,16 @@ public class Parqueadero extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton mayorBtn;
     private javax.swing.JButton mayorCascosBtn;
+    private javax.swing.JButton mayorPagoBtn;
     private javax.swing.JButton menorBtn;
     private javax.swing.JButton modificarBtn;
     private javax.swing.JLabel nroCarrosTxt;
     private javax.swing.JLabel nroMotosTxt;
+    private javax.swing.JLabel nroRemolquesTxt;
     private javax.swing.JLabel parquederoNombre;
     private javax.swing.JButton reporteBtn;
     // End of variables declaration//GEN-END:variables
