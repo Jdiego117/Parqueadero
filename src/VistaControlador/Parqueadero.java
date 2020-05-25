@@ -14,6 +14,7 @@ import Modelos.Vehiculo;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -25,11 +26,30 @@ import javax.swing.JOptionPane;
  *
  * @author juand
  */
-public class Parqueadero extends javax.swing.JFrame {
+public class Parqueadero extends javax.swing.JFrame implements Serializable {
 
     public Cubiculo cubiculos[] = new Cubiculo[10]; 
     
     public String nombre = "Parqueadero c.c";
+    
+    /**
+     * Creates new form Parqueadero
+     */
+    public Parqueadero() {
+        initComponents();
+        iniciarCubiculos();
+        cargarParqueadero();
+    }
+    
+    public void cargarParqueadero() {
+        DB db = new DB();
+        Cubiculo[] guardado = db.CargarCubiculos();
+        if (guardado == null) {
+            return;
+        }
+        this.cubiculos = guardado;
+        this.actualizarInformacion();
+    }
     
     public int cubiculosDisponibles() {
         int disponibles = 0;       
@@ -45,8 +65,6 @@ public class Parqueadero extends javax.swing.JFrame {
         int res = -1;
         int i = 0;
         while(i < this.cubiculos.length) {
-            System.out.println(i);
-            System.out.println(cubiculos[i]);
             if(cubiculos[i] == null) {
                 res = i;
                 break;
@@ -128,8 +146,6 @@ public class Parqueadero extends javax.swing.JFrame {
         for (int i = 0; i < 10; i++) {
             this.cubiculos[i] = null;
         }
-        
-        System.out.println(cubiculos[3]);
     }
     
     public String reporteVehiculos() { 
@@ -202,14 +218,6 @@ public class Parqueadero extends javax.swing.JFrame {
         return nombre;  
     } 
 
-    /**
-     * Creates new form Parqueadero
-     */
-    public Parqueadero() {
-        initComponents();
-        System.out.println(System.getenv("APPDATA"));
-        iniciarCubiculos();
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -240,6 +248,11 @@ public class Parqueadero extends javax.swing.JFrame {
         mayorPagoBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         parquederoNombre.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         parquederoNombre.setText("Parqueadero c.c");
@@ -494,6 +507,11 @@ public class Parqueadero extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "La persona que mas ha pagado por un servicio es: " + nombre);
         }
     }//GEN-LAST:event_mayorPagoBtnActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        DB db = new DB();
+        db.GuardarCubiculos(this.cubiculos);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

@@ -5,6 +5,7 @@
  */
 package Modelos;
 
+import VistaControlador.Parqueadero;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,6 +27,9 @@ public class DB {
 
     public DB() {
         this.DIR = System.getenv("APPDATA") + "/parqueadero";
+        if(!new File(DIR).exists()) {
+            new File(DIR).mkdirs();
+        }
     }
     
     public Vehiculo buscar(String placa) throws IOException, ClassNotFoundException{
@@ -90,6 +94,38 @@ public class DB {
         } catch (IOException ex) {
             Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
         }       
+    }
+    
+    public void GuardarCubiculos(Cubiculo[] cubiculos) {
+        try {
+            FileOutputStream fos = new FileOutputStream(DIR + "/cubiculos.bin");
+            ObjectOutputStream oss = new ObjectOutputStream(fos);
+            oss.writeObject(cubiculos);
+            oss.close();
+        } catch (FileNotFoundException ex) {
+        } catch (IOException ex) {
+        }
+    }
+    
+    public Cubiculo[] CargarCubiculos() {
+        File file = new File(DIR + "/cubiculos.bin");
+        
+        if (!file.exists()) {
+            return null;
+        }
+        
+        try {
+            
+            FileInputStream fos = new FileInputStream(DIR + "/cubiculos.bin");
+            ObjectInputStream ois = new ObjectInputStream(fos);
+            Cubiculo[] resultado = (Cubiculo[]) ois.readObject();
+            return resultado;
+            
+        } catch (FileNotFoundException ex) {          
+        } catch (IOException ex) {
+        } catch (ClassNotFoundException ex) {
+        }
+        return null;
     }
     
     public void AgregarFacturaHistorial(Factura factura) {

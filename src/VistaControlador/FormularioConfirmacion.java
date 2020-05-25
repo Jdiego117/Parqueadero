@@ -214,12 +214,10 @@ public class FormularioConfirmacion extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelarBtnActionPerformed
 
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
-        
+    
         int index = this.parqueadero.encontrarCubiculo();
         
-        System.out.println(index);
         Cubiculo cubiculo = new Cubiculo(this.vehiculo, new Date());
-        System.out.println(cubiculo);
         parqueadero.setCubiculo(index, cubiculo);
         parqueadero.actualizarInformacion();
         this.setVisible(false);

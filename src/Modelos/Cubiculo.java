@@ -5,13 +5,14 @@
  */
 package Modelos;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author juand
  */
-public class Cubiculo {
+public class Cubiculo implements Serializable{
     public Vehiculo vehiculo;
     private Date hora;
 
