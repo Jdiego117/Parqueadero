@@ -18,8 +18,10 @@ public class textViewer extends javax.swing.JFrame {
         initComponents();
     }
     
+    //crear una venta que permite visualizar un texto dado
     public textViewer(String text) {
         initComponents();
+        //igualar el texto de la interfaz al que se quiere mostrar
         this.textTxt.setText(text);
     }
 

@@ -25,8 +25,16 @@ public abstract class Vehiculo implements Serializable{
         this.conductor = conductor;
     } 
     
-
+    /**
+     * Metodo que debera ser sobreescrito para calcular la tarifa
+     * @param segundos
+     * @return la tarifa segun el tiempo de estadia
+     * @author Eveline
+     */
     public abstract double calcularTarifa(int segundos);
+    
+    
+    //Getters y Setters
     
     public String getPlaca() {
         return placa;

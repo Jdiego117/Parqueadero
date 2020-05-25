@@ -21,22 +21,29 @@ public class Buscar extends javax.swing.JFrame {
     public Parqueadero parqueadero;
     public String action = "";
     
-    /**
-     * Creates new form Buscar
-     * @param par
-     */
-    
     public Buscar() {
         initComponents();
     }
     
+    /**
+     * Crear una ventana de busqueda con la posibilidad de tener los datos del parqueadero
+     * @param parqueadero 
+     * @author Diego
+     */
     public Buscar(Parqueadero parqueadero) {
+        //igualar la varible local a la dada
         this.parqueadero = parqueadero;
         initComponents();
     }
     
+    /**
+     * Crear una ventana de buscar con una accion especifica dada, actualmente puede recibir el valor "actualiar"
+     * @param action
+     * @author Diego
+     */
     public Buscar(String action) {
         initComponents();
+        //igualar la varible local con la dada
         this.action = action;
     }
 
@@ -105,23 +112,44 @@ public class Buscar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
+        //buscar si existe un vehiculo con la placa ingresada
+        
+        //crear intancia de la clase DB
         DB db = new DB();
+        
         try {
+            //buscar el vehiculo con la placa
             Vehiculo veh = db.buscar(placaTxt.getText());
             
+            //comprobar si el vehiculo existe
             if(veh == null) {
+                //si el vehiculo NO existe
+                
+                //si se dio la accion "actualizar"
                 if(action.equals("actualizar")) {
+                    //mostrar mensaje indicando que el vehiculo no existe
                     JOptionPane.showMessageDialog(this, "El vehiculo no existe");
-                    return; 
+                    return; //parar el metodo aqui
                 }
+                //si NO se dio la accion
+                
+                //crear un formulario de vehiculo dandole la placa disponible y la informacion del parqueadero
                 FormularioVehiculo fVehiculo = new FormularioVehiculo(placaTxt.getText(), this.parqueadero);
                 fVehiculo.setVisible(true);
             } else {
+                //SI el vehiculo SI EXISTE
+                
+                //si se dio la accion de actualizar
                 if(action.equals("actualizar")) {
+                    //abrir una ventana de formulario de vehiculo con la informacion del vehiculo encontrado y la accion actualizar
                     FormularioVehiculo fVehiculo = new FormularioVehiculo(veh, action);
                     fVehiculo.setVisible(true);
-                    return;
+                    return; //parar el flujo del metodo aqui
                 }
+                
+                //si NO se dio la accion actualizar
+                
+                //abrir una ventana de confirmacion de ingreso ya que el vehiculo ya existe y no tiene que ser creado
                 FormularioConfirmacion fConfirmacion = new FormularioConfirmacion(veh, this.parqueadero);
                 fConfirmacion.setVisible(true);
             }           
@@ -130,7 +158,7 @@ public class Buscar extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Parqueadero.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        //cerrar esta ventana de busqueda
         this.setVisible(false);
     }//GEN-LAST:event_buscarBtnActionPerformed
 

@@ -22,31 +22,39 @@ public class Factura implements Serializable{
     private int Segundos = 0;
     private double valor = 0;
 
+    /**
+     * Constructor de la clase factura con el vehiculo al cual se cobrara
+     * @param vehiculo 
+     * @author Eveline
+     */
     public Factura(Vehiculo vehiculo) {
+        //igualar las variables locales a los parametros
         this.vehiculo = vehiculo;
         this.cliente = vehiculo.getConductor();
     }
-    
-    public Factura() {
-        DB db = new DB();
-        try {
-            this.vehiculo = db.buscar("123");
-            this.cliente = this.vehiculo.getConductor();
-        } catch (IOException ex) {
-            Logger.getLogger(Factura.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Factura.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
+
+    /**
+     * Calcula el tiempo en segundos que estuvo el vehiculo y calcular el valor a pagar 
+     * @param hora 
+     * @Author Eveline
+     */
     public void CalcularFactura(Date hora) {
+        //obtener la diferencia de hora entre la actual y la entregada en el metodo
         long diferencia = new Date().getTime() - hora.getTime();
+        //convertir la diferencia a segundos y almacenarla en la varible locar "Segundos"
         Segundos = (int) TimeUnit.MILLISECONDS.toSeconds(diferencia);
+        //Llamar al metodo del vehiculo que calcula la tarifa y almacenarla en la variable local "valor"
         this.valor = vehiculo.calcularTarifa(Segundos);
+        //crear un objecto DB y llamar al metodo que almacena la factura en el historial
         DB db = new DB();
         db.AgregarFacturaHistorial(this);      
     }
     
+    /**
+     * Genera el texto de la factura con todos los datos
+     * @return string con la factura
+     * @author Eveline
+     */
     public String imprimirFactura() {
         String factura = "";
         
@@ -58,6 +66,7 @@ public class Factura implements Serializable{
         factura += "Edad: " + cliente.getEdad() + "    \n";
         factura += "===================================\n";
         
+        //Comprobar si el vehiculo es un carro o moto para imprimir el tipo de vehiculo en la factura
         if(vehiculo instanceof Carro){
             factura += "Vehiculo: Carro           \n";
         } else {
@@ -68,7 +77,9 @@ public class Factura implements Serializable{
         factura += "Color: " + vehiculo.getColor() + " \n";
         factura += "Modelo: " + vehiculo.getModelo()+ "\n";
         
+        //Comprobar el tipo de vehiculo para poner el remolque o el numero de cascos
         if(vehiculo instanceof Carro){
+            //comprobar si el carro trae un remolque y escribir un SI o NO 
             if(((Carro) vehiculo).isRemolque()) {
                 factura += "Tiene remolque: SI\n";
             } else {
@@ -81,8 +92,11 @@ public class Factura implements Serializable{
         factura += "===================================\n";
         factura += "Segundos en parqueadero: "+Segundos+"\n";
         factura += "Valor a pagar: " + valor + "         \n";
+        //retornar el texto de la factura
         return factura;
     }
+    
+    //getters y setters
 
     public Conductor getCliente() {
         return cliente;

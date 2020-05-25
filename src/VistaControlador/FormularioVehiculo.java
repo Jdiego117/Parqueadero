@@ -28,27 +28,52 @@ public class FormularioVehiculo extends javax.swing.JFrame {
         initComponents();
     }
     
+    /**
+     * Crear una ventana de formulario de vehiculo con la posibilidad de acceder a los datos y metodos del parqueadero
+     * @param placa
+     * @param parqueadero 
+     * @author Diego
+     */
     public FormularioVehiculo(String placa, Parqueadero parqueadero) {
         initComponents();
+        //autocompletar la placa con la placa ingresada en la ventana de buscar
         this.placaTxt.setText(placa);
+        //igualar la varible local a la dada
         this.parqueadero = parqueadero;
+        //desactivar campos especificos de carro y moto
         this.cascosTxt.setEnabled(false);
         this.remolqueCheck.setEnabled(false);
     }
 
+    /**
+     * Crear una ventana con un vehiculo para rellenar los campos, y una accion, actualmente puede ser "actualizar"
+     * @param vehiculo
+     * @param action 
+     * @author Diego
+     */
     public FormularioVehiculo(Vehiculo vehiculo, String action) {
         initComponents();
+        //igualar la varible local a la dada
         this.action = action;
+        //desactivar campos especificos de carro y moto 
         this.cascosTxt.setEnabled(false);
         this.remolqueCheck.setEnabled(false);
+        //llamar metodo que rellena campos con el vehiculo dado
         llenarCampos(vehiculo);
     }
     
+    /**
+     * rellenar los campos de la interfaz con la informacion de un vehiculo dado
+     * @param veh 
+     * @author Diego
+     */
     public void llenarCampos(Vehiculo veh) {
+        //rellenar campos
         this.placaTxt.setText(veh.getPlaca());
         this.colorTxt.setText(veh.getColor());
         this.modeloTxt.setText(String.valueOf(veh.getModelo()));
         
+        //rellenar y activar campos dependiendo del tipo de vehiculo
         if(veh instanceof Carro) {
             this.carroRbt.setSelected(true);
             this.remolqueCheck.setEnabled(true);
@@ -59,6 +84,7 @@ public class FormularioVehiculo extends javax.swing.JFrame {
             this.cascosTxt.setText(String.valueOf(((Moto) veh).getNroCascos()));
         }
         
+        //rellenar campos
         this.cedulaTxt.setText(veh.getConductor().getCedula());
         this.nombreTxt.setText(veh.getConductor().getNombre());
         this.apellidoTxt.setText(veh.getConductor().getApellido());
@@ -342,6 +368,7 @@ public class FormularioVehiculo extends javax.swing.JFrame {
 
     private void guardarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBtnActionPerformed
         try {
+            //crear un vehiculo con todos los datos ingresados
             String placa = this.placaTxt.getText();
             String color = this.nombreTxt.getText();
             int modelo = Integer.parseInt(this.modeloTxt.getText());
@@ -355,27 +382,39 @@ public class FormularioVehiculo extends javax.swing.JFrame {
             Vehiculo vehiculo = null;
             
             if  (this.carroRbt.isSelected()) {
+                //si se selecciono la opcion de carro crear uno
                 boolean remolque = this.remolqueCheck.isSelected();
                 vehiculo = new Carro(placa, color, modelo, cliente, remolque);
             } else {
+                //si se selecciono la opcion de moto crear una
                 int cascos = Integer.parseInt(this.cascosTxt.getText());
                 vehiculo = new Moto(placa, color, modelo, cliente, cascos);
             }
             
+            //crar una instancia de la clase DB
             DB db = new DB();
+            //Guardar el vehiculo creado en los archivos del programa
             db.GuardarCarro(vehiculo);
             
+            //SI y SOLO si se dio la accion de actulizar
             if(action.equals("actualizar")) {
+                //indicar que el vehiculo fue actualizado
                 JOptionPane.showMessageDialog(this, "Vehiculo actualizado");
+                //cerar esta ventana de formulario
                 this.setVisible(false);
-                return;
+                return;//parar el flujo de este metodo aqui
             }
+            
+            //si NO se dio la opcion actualizar
+            
+            //abrir una ventana de confirmacion de ingreso con el vehiculo que se acaba de crear y la informacion del parqueadero
             FormularioConfirmacion fConfirmacion = new FormularioConfirmacion(vehiculo, this.parqueadero);
             fConfirmacion.setVisible(true);
         } catch(Exception e) {
+            //mostrar mensaje si se cometio un error al ingresar los datos
             JOptionPane.showMessageDialog(this, "Los datos que has ingresado no son validos, valida los tipos de datos ingresados");
         }
-        
+        //cerrar esta ventana si todo salio bien :)
         this.setVisible(false);
     }//GEN-LAST:event_guardarBtnActionPerformed
 

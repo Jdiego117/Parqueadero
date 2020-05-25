@@ -28,14 +28,27 @@ public class FormularioConfirmacion extends javax.swing.JFrame {
         initComponents();
     }
     
+    /**
+     * Crear una ventana de confirmacion de ingreso al parqueadero con el vehiculo a ingresar y el parqueadero
+     * @param vehiculo
+     * @param parqueadero 
+     * @author Diego
+     */
     public FormularioConfirmacion(Vehiculo vehiculo, Parqueadero parqueadero) {
          initComponents();
+         //igualar varibles locales con las dadas
          this.vehiculo = vehiculo;
          this.parqueadero = parqueadero;
+         //lamar metodo que rellena los campos
          IniciarCampos();
     }
     
+    /**
+     * Rellenar campos de la interfaz con los datos basicos del vehiculo
+     * @author Diego
+     */
     public void IniciarCampos() {
+        //desactivar y rellenar campos
         this.placaTxt.setEnabled(false);
         this.placaTxt.setText(vehiculo.getPlaca());
         this.nombreTxt.setEnabled(false);
@@ -191,11 +204,15 @@ public class FormularioConfirmacion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cascosTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(confirmarBtn)
-                    .addComponent(cancelarBtn))
-                .addGap(34, 34, 34))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                        .addComponent(confirmarBtn)
+                        .addGap(34, 34, 34))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(cancelarBtn)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -210,16 +227,21 @@ public class FormularioConfirmacion extends javax.swing.JFrame {
     }//GEN-LAST:event_carroRbnActionPerformed
 
     private void cancelarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarBtnActionPerformed
+        //cerrar esta ventana
         this.setVisible(false);
     }//GEN-LAST:event_cancelarBtnActionPerformed
 
     private void confirmarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarBtnActionPerformed
-    
+        //bucar un cubiculo disponible en el parqueadero
         int index = this.parqueadero.encontrarCubiculo();
         
+        //crear un nuevo cubiculo y almacenar el vehiculo y darle la hora de ingreso que se toma automaticamente con new Date()
         Cubiculo cubiculo = new Cubiculo(this.vehiculo, new Date());
+        //guardar el cubiculo en el parqueadero
         parqueadero.setCubiculo(index, cubiculo);
+        //actualizar la informacion de cubiculos en la interfaz de parqueaderos
         parqueadero.actualizarInformacion();
+        //cerrar esta ventana
         this.setVisible(false);
     }//GEN-LAST:event_confirmarBtnActionPerformed
 

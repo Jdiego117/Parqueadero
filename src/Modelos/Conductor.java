@@ -24,6 +24,8 @@ public class Conductor implements Serializable{
         this.edad = edad;
     }
     
+    //Getters y Setters
+    
     public String getCedula() {
         return cedula;
     }
@@ -54,7 +56,5 @@ public class Conductor implements Serializable{
 
     public void setEdad(int edad) {
         this.edad = edad;
-    }
-    
-    
+    }  
 }

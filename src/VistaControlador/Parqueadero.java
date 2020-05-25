@@ -28,8 +28,8 @@ import javax.swing.JOptionPane;
  */
 public class Parqueadero extends javax.swing.JFrame implements Serializable {
 
+    //Variables de la clase principal
     public Cubiculo cubiculos[] = new Cubiculo[10]; 
-    
     public String nombre = "Parqueadero c.c";
     
     /**
@@ -37,184 +37,340 @@ public class Parqueadero extends javax.swing.JFrame implements Serializable {
      */
     public Parqueadero() {
         initComponents();
+        //inicia el vector de cubiculos con valores nulos para evitar errores en comprobaciones
         iniciarCubiculos();
+        //carga el parqueadero a su ultimo estado
         cargarParqueadero();
     }
     
+    /**
+     * Carga el parqueadero al ultimo estado antes de cerrarlo
+     * @author Diego
+     */
     public void cargarParqueadero() {
+        //crear instancia de la clase DB
         DB db = new DB();
+        //Cargar los cubiculos almacenados
         Cubiculo[] guardado = db.CargarCubiculos();
         if (guardado == null) {
-            return;
+            return; // retornar en caso de no exister archivo alguno
         }
-        this.cubiculos = guardado;
+        this.cubiculos = guardado; // igualar vector locar de cubiculos al almacenado
+        //llamar al metodo que actualiza los datos de la interfaz
         this.actualizarInformacion();
     }
     
+    /**
+     * Encontrar cuantos cubiculos estan disponibles
+     * @return numero de cubiculos vacios
+     * @author Eveline
+     */
     public int cubiculosDisponibles() {
+        //crear variable que tendra el numero de cubiculos disponibles
         int disponibles = 0;       
+        //ciclo para recorrer el vector de cubiculos local
         for (int i = 0; i < cubiculos.length; i++) {
+            //si la posicion i en el vector esta vacia (null) sumar 1 al contador de disponibles
             if(cubiculos[i] == null) {
                 disponibles++;
             }
         }        
+        //retornar el numero de cubiculos disponibles
         return disponibles;
     } 
     
+    /**
+     * Encontrar algun cubiculo disponible
+     * @return posicion de un espacio vacio en el vector de cubiculos
+     * @author Eveline
+     */
     public int encontrarCubiculo() {
+        //crear varible que tendra la posicion libre, inicializada en -1 que significa que no hay un lugar disponible
         int res = -1;
+        //crear la varible i para el ciclo mientras
         int i = 0;
+        //mientras la variable i sea menor a la longitud del vector de cubiculos
         while(i < this.cubiculos.length) {
+            //Comprobar si el vector en la posicion i esta vacio
             if(cubiculos[i] == null) {
+                //si esta vacio igualar la variable de respuesta a la posicion i
                 res = i;
+                //salir del metodo para dejar de buscar una posicion libre
                 break;
             }
             i++;
         }
+        //retornar la varible con la posicion libre, o con -1 en caso de que no se encuentre un lugar vacio
         return res;
     }
     
+    /**
+     * Guardar un cubiculo en una posicion dada del vector de cubiculos
+     * @param index
+     * @param cubiculo 
+     * @Eveline
+     */
     public void setCubiculo(int index, Cubiculo cubiculo) {
+        //guardar en la posicion i del vector de vehiculos el objeto resibido como parametro
         this.cubiculos[index] = cubiculo; 
     }
     
+    /**
+     * Obtiene el cubiculo que se encuentra en una posicion dada del vector
+     * @param index
+     * @return cubiculo que se encuentra en la posicion
+     * @author Eveline
+     */
+    public Cubiculo getCubiculo(int index) {
+        //retornar el elemento de la posicion dada
+        return this.cubiculos[index];
+    }
+    
+    /**
+     * Actualiza la informacion de la interfaz con los datos de los cubiculos
+     * @author Eveline
+     */
     public void actualizarInformacion() {
+        //Escribir en la interfaz cuantos cubiculos hay disponibles
         int disponibles = cubiculosDisponibles();
         this.cubiculosDisponiblesTxt.setText(String.valueOf(disponibles) + "/" + cubiculos.length);
+        //Escribir en la interfaz cuantos carros hay en el parqueadero
         int carros = contarCarros();
         this.nroCarrosTxt.setText(String.valueOf(carros));
+        //Escribir en la interfaz cuantas motos hay en el parqueadero
         int motos = contarMotos();
         this.nroMotosTxt.setText(String.valueOf(motos));  
+        //Escribir en la interfaz cuantos carros con remolques hay en el parqueadero
         this.nroRemolquesTxt.setText(String.valueOf(contarCarrosRemolque()));
     }
     
-    public int contarCarros() { 
+    /**
+     * Contar cuantos carros hay en el vector de cubiculos del parqueadero
+     * @return numero de carros en el parqueadero
+     * @author Eveline
+     */
+    public int contarCarros() {
+        //variable donde se contaran los carros
         int contador = 0;
+        //ciclo que recorre el vector de cubiculos
         for (int i = 0; i < cubiculos.length; i++){
+            //comprobar que el cubiculo no este vacio (diferente de null)
             if(cubiculos[i] != null) {
+                //comprobar si el vehiculo es un carro
                 if (cubiculos[i].vehiculo instanceof Carro){
+                    //aumentar en 1 el contador
                     contador++;
                 }
             }
         }
+        //retornar el contador
         return contador; 
     } 
     
-    public int contarMotos() { 
+    /**
+     * Contar cuantas motos hay en el vector de cubiculos
+     * @return numero de motos en el parqueadero
+     * @author Eveline
+     */
+    public int contarMotos() {
+        //variable donde se contaran los carros
         int contador = 0;
+        //ciclo que recorre el vector de cubiculos
         for (int i = 0; i < cubiculos.length; i++){
+            //comprobar que el cubiculo no este vacio (diferente de null)
             if(cubiculos[i] != null) {
+                //comprobar si el vehiculo es una moto
                 if (cubiculos[i].vehiculo instanceof Moto){
+                    //aumentar en 1 el contador
                     contador++;
                 }
             }
         }
+        //retornar el contador
         return contador; 
     } 
       
+    /**
+     * Encontar la placa de la moto con mas cascos
+     * @return placa de la moto con mas cascos
+     * @author Eveline
+     */
     public String mayorNroCascos() {
+        //varible donde se guardara la placa, si no se encuentra seguira estando vacia
         String placa = "";
+        //mayor numero de cascos encontrado
         int numeroCascos = 0;
+        //ciclo que recorre el vector de cubiculos
         for (int i = 0; i < cubiculos.length; i++) {
+            //comprobar que el cubiculo no este vacio (diferente de null)
             if (cubiculos[i] != null) {
+                //comprobar si el vehiculo es una moto
                 if (cubiculos[i].vehiculo instanceof Moto) {
+                    //Comprobar si el numero de cascos de la moto es mayor que el almacenado en la varible
                     if (((Moto)cubiculos[i].vehiculo).getNroCascos()>numeroCascos) {
+                        //igualar la varible a la placa de moto
                         placa = cubiculos[i].vehiculo.getPlaca();
+                        //igualar el mayor numero de cascos al numero de cascos que tiene la moto
                         numeroCascos= ((Moto)cubiculos[i].vehiculo).getNroCascos();
                     }       
                 }              
             }             
         }
+        //retornar la placa
         return placa;
     }
       
+    /**
+     * Contar cuantos carros del parqueadero tienen remolque
+     * @return numero de carros con remolque
+     * @author Eveline
+     */
     public int contarCarrosRemolque() { 
+        //contador de carros con remolque
         int contador = 0;
+        //ciclo que recorre el vector de cubiculos
         for (int i = 0; i < cubiculos.length; i++){
+            //comprobar que el cubiculo no este vacio (diferente de null)
             if(cubiculos[i] != null) {
+                //comprobar si el vehiculo es un Carro
                 if (cubiculos[i].vehiculo instanceof Carro) {
+                    //comprobar si el carro tiene un remolque
                     if (((Carro)cubiculos[i].vehiculo).isRemolque()){
+                        //aumentar en 1 el contador de carros con remolque
                         contador++;
                     }
                 }    
             } 
         }
+        //retornar el contador
         return contador;  
     }
     
+    /**
+     * Rellena todos los campos del vector de cubiculos con null
+     * @author Diego
+     */
     public void iniciarCubiculos() {
+        //recorrer el vector de cubiculos
         for (int i = 0; i < 10; i++) {
+            //igualar el vector en la posicion i a null
             this.cubiculos[i] = null;
         }
     }
-    
-    public String reporteVehiculos() { 
-        return ""; 
-    } 
-    
+
+    /**
+     * Buscar un cubiculo que contenga un vehiculo dado su placa
+     * @param placa
+     * @return posicion del cubiculo encontrado en el vector
+     * @author Diego
+     */
     public int buscarCubiculo(String placa) {
+        //iniciar varible que contendra la posicion, si conserva el valor -1 es porque el vehiculo no fue encontrado
         int index = -1;
-       
+        //ciclo que recorre el vector de cubiculos
         for (int i = 0; i < cubiculos.length; i++) {
+            //comprobar que el cubiculo no este vacio (diferente de null)
             if(cubiculos[i] != null) {
+                //comparar la placa del vehiculo encontrado con la placa solicitada
                 if(cubiculos[i].getVehiculo().getPlaca().equals(placa)) {
+                    //igualar la posicion i en la varible index si las placas son iguales
                     index = i;
                 }
             }
         }
+        //retornar la posicion encontrada o -1
         return index;
     }
     
-    public Cubiculo getCubiculo(int index) {
-        return this.cubiculos[index];
-    }
-    
-    
+    /**
+     * Encontrar el nombre de la persona que mas ha pagado en una factura
+     * @return el nomre de la persona
+     * @author Diego
+     */
     public String mayorFactura() { 
+        //variable para guardar el nombre, si no hay facturas se conservara el valor vacio
         String nombre = "";
+        //variable para guardar el mayor valor encontrado hasta el momento
         double mayor = 0;
+        //instancia de la clase DB
         DB db = new DB();
+        //crear una lista de facturas y almacenar ahi el historial de facturas guardado en los archivos del programa
         LinkedList<Factura> facturas = db.CargarHistorialFacturas();
-        
+        //recorrer la lista de facturas
         for (int i = 0; i < facturas.size(); i++) {
+            //comprobar si el valor de la factura en la posicion i supera al de la variable mayor
             if(facturas.get(i).getValor() > mayor) {
+                //igualar la variable mayor al valor de la factura
                 mayor = facturas.get(i).getValor();
+                //igualar el nombre al nombre de la persona a la cual pertenece la factura
                 nombre = facturas.get(i).getCliente().getNombre();
             }
         }
-        
+        //retornar el nombre
         return nombre;
     }
     
+    /**
+     * Encontrar la placa del carro de mayor modelo
+     * @return placa del carro
+     * @author Eveline
+     */
     public String mayorModeloCarro() { 
+        //variable donde se guardara la placa
         String placa = "";
+        //variable con el mayor modelo encontrado hasta el momento
         int mayorModelo = 0;
+        //recorrer el vector de cubiculos
         for (int i = 0; i < cubiculos.length; i++) {
+            //comprobar que el cubiculo no este vacio (diferente de null)
             if (cubiculos[i] != null) {
+                //comprobar si el vehiculo es un carro
                 if(cubiculos[i].vehiculo instanceof Carro) {
+                    //comprobar si el modelo del carro es mayor que el ultimo encontrado en la variable
                     if (cubiculos[i].vehiculo.getModelo()>mayorModelo) {
+                        //igualar el mayor modelo al modelo del carro
                         mayorModelo = cubiculos[i].vehiculo.getModelo();
+                        //igualar la placa a la placa del carro encontrado
                         placa = cubiculos[i].vehiculo.getPlaca();
                     }
                 }   
             }               
         }
+        //retornar la placa del carro
         return placa;
     } 
     
+    /**
+     * Encontrar el nombre del dueño con el carro de menor modelo
+     * @return nombre del dueño
+     * @author Eveline
+     */
     public String menorModeloCarro() { 
+        //variable del nombre
         String nombre = "";
+        //variable del menor modelo encontrado
         int menorModelo = 0;
+        //recorrer el vector de cubiculos
         for (int i = 0; i < cubiculos.length; i++) {
+            //comprobar que el cubiculo no este vacio (diferente de null)
             if (cubiculos[i] != null) {
+                //comprobar si el vehiculo es un carro
                 if(cubiculos[i].vehiculo instanceof Carro) {
+                    /*
+                    Comprobar si el modelo del carro es menor a el ultimo carro
+                    O si es el primer carro que encuentra, ya que el modelo del primer
+                    carro nunca sera menor que 0
+                    */
                     if (cubiculos[i].vehiculo.getModelo()<menorModelo || i==0) {
+                        //igualar el menor modelo al modelo del carro
                         menorModelo = cubiculos[i].vehiculo.getModelo();
+                        //igualar el nombre al nombre del dueño del vehiculo
                         nombre = cubiculos[i].vehiculo.getConductor().getNombre();
                     } 
                 }     
             }          
         }
+        //retornar el nombre
         return nombre;  
     } 
 
@@ -430,23 +586,33 @@ public class Parqueadero extends javax.swing.JFrame implements Serializable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void agregarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarBtnActionPerformed
+        //crear una ventana de busqueda y darle este parqueadero
         Buscar buscar = new Buscar(this);
         buscar.setVisible(true);
     }//GEN-LAST:event_agregarBtnActionPerformed
 
     private void expulsarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expulsarBtnActionPerformed
+        //crear una ventana de busqueda en parqueadero para encontrar el vehiculo que se quiere expulsar
         BuscarEnParqueadero buscarP = new BuscarEnParqueadero(this);
         buscarP.setVisible(true);
     }//GEN-LAST:event_expulsarBtnActionPerformed
 
     private void reporteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reporteBtnActionPerformed
+        //generar un reporte de los vehiculos
+        
+        //crear una instancia de la clase BD
         DB db = new DB();
+        //llamar el metodo que carga todos los vehiculos guardados en los archivos
         LinkedList<Vehiculo> vehiculos = db.obtenerTodosVehiculos();
         
+        //crear la estructura del reporte
         String reporte = "Placa;Color;Modelo;Tipo;Dueño;Cedula;Edad\n";
         
+        //recorrer la lista de vehiculos
         for (int i = 0; i < vehiculos.size(); i++) {
+            //obtener el vehiculo que se encuentra en la posicion i
             Vehiculo veh = vehiculos.get(i);
+            //agregar la informacion del vehiculo separa por ; dependiendo del tipo
             if(veh instanceof Carro) {
                 reporte += veh.getPlaca()+";"+veh.getColor()+";"+veh.getModelo()+";Carro;"+veh.getConductor().getNombre()+";"+veh.getConductor().getCedula()+";"+veh.getConductor().getEdad()+";\n";
             } else {
@@ -454,10 +620,13 @@ public class Parqueadero extends javax.swing.JFrame implements Serializable {
             }
         }
         
+        //intentar guardar el reporte
         try {
+            //crear una ventana para elegir donde se quiere guardar el archivo
             JFileChooser ventana = new JFileChooser();
             ventana.showSaveDialog(this);
             String ruta = ventana.getSelectedFile().toString();
+            //intentar guardar el archivo con el reporte generado en la ruta escogida
             try (BufferedWriter archivo = new BufferedWriter(new FileWriter(ruta + ".csv"))) {
                    archivo.write(reporte);
             }
@@ -468,42 +637,55 @@ public class Parqueadero extends javax.swing.JFrame implements Serializable {
     }//GEN-LAST:event_reporteBtnActionPerformed
 
     private void mayorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mayorBtnActionPerformed
+        //llamar el metodo que busca la placa del carro de mayor modelo
         String placa = mayorModeloCarro();
         if (placa == "") {
+            //si no se encontro mostrar este mensaje
             JOptionPane.showMessageDialog(this, "No hay carros");
         } else {
+            //si se encontro mostrar la placa en un mensaje
             JOptionPane.showMessageDialog(this, "La placa del carro con el mayor modelo es:" + placa);
         }
     }//GEN-LAST:event_mayorBtnActionPerformed
 
     private void menorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menorBtnActionPerformed
+        //llamar el metodo que busca el nombre del dueño del carro de menor modelo
         String nombre = menorModeloCarro();
         if (nombre == "") {
+            //si no se encontro mostrar este mensaje
             JOptionPane.showMessageDialog(this, "No hay carros");
         } else {
+            //si se encontro mostrar el nombre en un mensaje
             JOptionPane.showMessageDialog(this, "El nombre de la persona con el carro de menor modelo es:" + nombre);
         }
     }//GEN-LAST:event_menorBtnActionPerformed
 
     private void mayorCascosBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mayorCascosBtnActionPerformed
+        //llamar el metodo que busca la placa de la moto con mayor numero de cascos
         String placa = mayorNroCascos();
         if (placa == "") {
+            //si no se encontro mostrar este mensaje
             JOptionPane.showMessageDialog(this, "No hay motos");
         } else {
+            //si se encontro mostrar la placa en un mensaje
             JOptionPane.showMessageDialog(this, "La placa de la moto con mas cascos es:" + placa);
         }
     }//GEN-LAST:event_mayorCascosBtnActionPerformed
 
     private void modificarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarBtnActionPerformed
+        //crear ventana de busqueda dandole la accion de actualizar
         Buscar buscar = new Buscar("actualizar");
         buscar.setVisible(true);
     }//GEN-LAST:event_modificarBtnActionPerformed
 
     private void mayorPagoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mayorPagoBtnActionPerformed
+        //llamar el metodo que busca el nombre de la persona que mas ha pagado
         String nombre = mayorFactura();
         if (nombre == "") {
+            //si no se encontro mostrar este mensaje
             JOptionPane.showMessageDialog(this, "No hay historial de facturas aun");
         } else {
+            //si se encontro mostrar el nombre en un mensaje
             JOptionPane.showMessageDialog(this, "La persona que mas ha pagado por un servicio es: " + nombre);
         }
     }//GEN-LAST:event_mayorPagoBtnActionPerformed

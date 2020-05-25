@@ -26,6 +26,10 @@ public class BuscarEnParqueadero extends javax.swing.JFrame {
         initComponents();
     }
     
+    /**
+     * crear una ventana de busqueda con los datos del parqueadero
+     * @param parqueadero 
+     */
     public BuscarEnParqueadero(Parqueadero parqueadero) {
         initComponents();
         this.parqueadero = parqueadero;
@@ -95,13 +99,20 @@ public class BuscarEnParqueadero extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
+        //buscar la posicion del vehiculo que tenga la placa dada
         int index = this.parqueadero.buscarCubiculo(this.placaTxt.getText());
         
         if(index == -1) {
+            //si el vehiculo no esta en el parquedero mostrar este mensaje
             JOptionPane.showMessageDialog(this, "El vehiculo solicitado no se encuentra en el parqueadero");
         } else {
+            //si el vehiculo SI esta en el parqueadero
+            
+            //crear una ventana de factura con la posicion del cubiculo encontrada y la informacion del parqueadero
             FacturaVista factura = new FacturaVista(index, this.parqueadero);
             factura.setVisible(true);
+            
+            //cerrar esta ventana
             this.setVisible(false);
         }
     }//GEN-LAST:event_buscarBtnActionPerformed

@@ -30,18 +30,34 @@ public class FacturaVista extends javax.swing.JFrame {
         initComponents();
     }
     
+    /**
+     * Crear ventana de factura con la posicion del cubiculo que se facturara y el parqueadero
+     * @param index
+     * @param parqueadero 
+     * @author Diego
+     */
     public FacturaVista(int index, Parqueadero parqueadero) {
         initComponents();
+        //igualar variables locales a las dadas
         this.cubiculo = index;
         this.parqueadero = parqueadero;
+        //llamar al metodo que genera la factura
         GenerarFactura();
     }
     
+    /**
+     * Generar la factura y sacar el vehiculo del parqueadero
+     */
     public void GenerarFactura() {
+        //obtener el cubiculo donde esta el vehiculo
         Cubiculo cubiculo = this.parqueadero.getCubiculo(this.cubiculo);
+        //crear la factura dando el vehiculo
         factura = new Factura(cubiculo.getVehiculo());
+        //calcular la factura dando la hora a la que se registro el ingreso
         factura.CalcularFactura(cubiculo.getHora());
+        //vaciar el cubiculo donde estaba el vehiculo
         this.parqueadero.setCubiculo(this.cubiculo, null);
+        //llamar al metodo del parqueadero que actualiza la informacion de los cubiculos en la interfaz
         this.parqueadero.actualizarInformacion();
     }
 
@@ -141,11 +157,15 @@ public class FacturaVista extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exportarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportarBtnActionPerformed
+        //obtener el texto de la factura
         String factura = this.factura.imprimirFactura();
+        //intentar guardar
         try {
+            //mostrar ventana para seleccionar donde se quiere guardar la factura
             JFileChooser ventana = new JFileChooser();
             ventana.showSaveDialog(this);
             String ruta = ventana.getSelectedFile().toString();
+            //guardar el archivo con el texto de la factura en la direccion seleccionada
             try (BufferedWriter archivo = new BufferedWriter(new FileWriter(ruta + ".txt"))) {
                    archivo.write(factura);
             }
@@ -156,6 +176,7 @@ public class FacturaVista extends javax.swing.JFrame {
     }//GEN-LAST:event_exportarBtnActionPerformed
 
     private void verBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verBtnActionPerformed
+        //crear una ventana de visualizacion de texto con la factura
         textViewer txt = new textViewer(factura.imprimirFactura());
         txt.setVisible(true);
     }//GEN-LAST:event_verBtnActionPerformed
@@ -165,6 +186,7 @@ public class FacturaVista extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void cerrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarBtnActionPerformed
+        //cerrar esta ventana
         this.setVisible(false);
     }//GEN-LAST:event_cerrarBtnActionPerformed
 

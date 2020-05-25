@@ -16,13 +16,12 @@ public class Cubiculo implements Serializable{
     public Vehiculo vehiculo;
     private Date hora;
 
-    public Cubiculo() {
-    }
-
     public Cubiculo(Vehiculo vehiculo, Date hora) {
         this.vehiculo = vehiculo;
         this.hora = hora;
     }
+    
+    //Getters y Setters
     
     public Vehiculo getVehiculo() {
         return vehiculo;
